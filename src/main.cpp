@@ -5,6 +5,11 @@
 #include <DS3232RTC.h>
 
 DS3232RTC RTC;
+// Timer variables
+unsigned long previousMillis = 0;
+unsigned long previousNTPMillis = 0;
+const unsigned long interval = 5000; // 5 second in milliseconds
+const unsigned long ntpInterval = 3600000; // 60 minutes in milliseconds
 
 // Set your NTP server credentials
 const char* ntpServer = "pool.ntp.org";
@@ -47,10 +52,9 @@ void setup() {
   // getEpochTime関数は、NTPClientクラスのメンバ関数。この関数は、NTPサーバーから取得したエポック時間（Unix時間）を返します。
 }
 
-void loop() {
-  static unsigned long previousMillis = 0;
+void loop() {// Check if 1 second has passed
   unsigned long currentMillis = millis();
-  if (currentMillis - previousMillis >= 1000) {
+  if (currentMillis - previousMillis >= interval) {
     previousMillis = currentMillis;
   // Print the current time
   tmElements_t tm;
@@ -66,5 +70,14 @@ void loop() {
   Serial.print(tm.Minute, DEC);
   Serial.print(":");
   Serial.println(tm.Second, DEC);
+  }
+    // Check if checktimer has passed
+  if (currentMillis - previousNTPMillis >= ntpInterval) {
+    previousNTPMillis = currentMillis;
+    
+    // Update the system time using NTP
+    timeClient.update();
+    RTC.set(timeClient.getEpochTime()); // Set the RTC time
+    Serial.println("Updated the system time using NTP");
   }
 }
