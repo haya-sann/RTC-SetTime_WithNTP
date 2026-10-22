@@ -2,14 +2,16 @@
 #include <WiFiManager.h> // Include the Wi-FiManager library
 #include <NTPClient.h> // Include the NTPClient library
 #include <WiFiUdp.h> // Include the WiFiUdp library
-#include <DS3232RTC.h>
+#include <DS3232RTC.h> // https://github.com/JChristensen/DS3232RTC
 #include <SSD1306.h>
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
 
 // Initialize the OLED display using Wire library
-SSD1306Wire display(0x3c, SDA, SCL);   // ADDRESS, SDA, SCL  -  SDA and SCL usually populate automatically based on your board's pins_arduino.h e.g. https://github.com/esp8266/Arduino/blob/master/variants/nodemcu/pins_arduino.h
+SSD1306Wire display(0x3c, SDA, SCL);   // ADDRESS, SDA, SCL  -  
+// SDA and SCL usually populate automatically based on your board's pins_arduino.h e.g.
+// https://github.com/esp8266/Arduino/blob/master/variants/nodemcu/pins_arduino.h
 // SH1106Wire display(0x3c, SDA, SCL);
 
 DS3232RTC RTC;
